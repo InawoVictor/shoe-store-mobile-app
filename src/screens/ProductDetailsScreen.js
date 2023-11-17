@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '500',
         letterSpacing: 1.5,
+        color: 'brown'
     },
     desc: {
         fontSize: 17,
