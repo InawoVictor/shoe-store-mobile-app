@@ -1,42 +1,48 @@
 import { FlatList, Pressable, ScrollView, StyleSheet, Text, View } from "react-native"
-import cart from "../data/cart"
+// import cart from "../data/cart"
 import CartListItem from "../components/CartListItem"
 
+import { useSelector } from "react-redux"
+import { selectDeliveryPrice, selectSubtotal, selectTotal } from "../store/cartSlice"
+
 const ShoppingCartTotals = () => {
+    const subtotal = useSelector(selectSubtotal) 
+    const deliveryFee = useSelector(selectDeliveryPrice) 
+    const total = useSelector(selectTotal) 
     return (
         <>
             <View style={styles.row}>
                 <Text style={styles.text}>Subtotal:</Text>
-                <Text style={styles.text}>410.00 US$</Text>
+                <Text style={styles.text}>{subtotal}US$</Text>
             </View>
             <View style={styles.row}>
                 <Text style={styles.text}>Delivery:</Text>
-                <Text style={styles.text}>10.00 US$</Text>
+                <Text style={styles.text}>{deliveryFee} US$</Text>
             </View>
             <View style={styles.row}>
                 <Text style={styles.textBold}>Total:</Text>
-                <Text style={styles.textBold}>420.00 US$</Text>
+                <Text style={styles.textBold}>{total}US$</Text>
             </View>
         </>
     )
 }
 
 const ShoppingCartScreen = () => {
+    const cartItems = useSelector(state => state.cart.items)
+
     return (
-        <>
-            <ScrollView>
-                <FlatList
-                    data={cart}
-                    renderItem={({item}) => (
-                        <CartListItem cartItem={item} />
-                    )}
-                    ListFooterComponent={() => (
-                        <View style={styles.totalsContainer}>
-                            <ShoppingCartTotals />
-                        </View>
-                    )}
-                />
-            </ScrollView>
+        <>            
+            <FlatList
+                data={cartItems}
+                renderItem={({item}) => (
+                    <CartListItem cartItem={item} />
+                )}
+                ListFooterComponent={() => (
+                    <View style={styles.totalsContainer}>
+                        <ShoppingCartTotals />
+                    </View>
+                )}
+            />
 
             <Pressable style={styles.button}>
                 <Text style={styles.buttonText}>Checkout</Text>
